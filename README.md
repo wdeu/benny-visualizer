@@ -16,7 +16,7 @@ Quick Start
 
 Hinweis zur Lizenz
 ------------------
-Dieses Projekt steht unter der MIT License (LICENSE-Datei ist bereits im Repository vorhanden).
+Dieses Projekt steht unter der MIT License.
 
 Steuerungslogik — exakt aus dem Quellcode
 -----------------------------------------
@@ -83,15 +83,7 @@ Datei-Struktur (im Repo)
 
 Screenshots
 -----------
-Die Screenshots sind jetzt im Repository unter assets/screenshots/ abgelegt. Hier sind sie direkt eingebunden:
-
-![Übersicht — Gesamtansicht der Visualisierung](assets/screenshots/overview.png)
-
-![Diskant-Ansicht — Detailansicht der Tasten](assets/screenshots/keyboard.png)
-
-Hinweis: Falls die Dateinamen abweichen, nenne mir bitte die exakten Dateinamen (inkl. Groß-/Kleinschreibung) und ich passe die Pfade an.
-
-Contributing
+...
 ------------
 - Fehler melden: Erstelle ein Issue.
 - Feature-Vorschläge / Änderungen: Fork → Branch → PR.
@@ -99,6 +91,4 @@ Contributing
 
 Automatische Anpassung & nächste Schritte
 ----------------------------------------
-Die README wurde basierend auf index.html erzeugt und enthält nun die eingebundenen Screenshots. Wenn du möchtest, kann ich zusätzlich:
-- Thumbnails/Redimensionierungen der Bilder erzeugen und ins Repo committen.
-- Zusätzliche Bildunterschriften, Bildbeschreibungen (alt-Text) oder einen direkten Link zur Vollbildversion ergänzen.
+Die README wurde basierend auf index.html erzeugt. Anpassungen folgen.
