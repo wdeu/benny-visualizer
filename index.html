@@ -1,620 +1,330 @@
 <!DOCTYPE html>
-
 <html lang="de">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Castagnari Benny Visualizer</title>
 <style>
-/* ===================== RESET & VARIABLES ===================== */
-* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+/* ──────────── RESET & VARS ──────────── */
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 
 :root {
-–bg: #1c1c1e;
-–bg-card: #2c2c2e;
-–bg-inset: #3a3a3c;
-–text-primary: #f2f2f7;
-–text-secondary: #8e8e93;
-–text-tertiary: #636366;
-–separator: #38383a;
-–accent: #0a84ff;
-–accent-subtle: rgba(10,132,255,0.15);
-–pearl-top: #e8e4df;
-–pearl-mid: #d6d1cb;
-–pearl-bot: #c4bfb8;
-–pearl-shadow: rgba(0,0,0,0.35);
-–pearl-text: #3a3a3c;
+    --bg:#1c1c1e; --bg-card:#2c2c2e; --bg-inset:#3a3a3c;
+    --txt:#f2f2f7; --txt2:#8e8e93; --txt3:#636366;
+    --sep:#38383a;
+    --accent:#0a84ff; --accent-sub:rgba(10,132,255,0.18);
+    /* pearl – visible on both light & dark displays */
+    --p0:#f0ece7; --p1:#ddd8d1; --p2:#ccc7bf;
+    --p-shadow:rgba(0,0,0,0.30);
+    --p-text:#3a3a3c;
+    /* active states */
+    --act-bg:#4a4a4c;          /* helles grau – aktive Taste */
+    --act-txt:#f2f2f7;
+    --root-bg:#3a3a3c;         /* dunkles grau – Grundton */
+    --root-txt:#f2f2f7;
 }
 
-html, body {
-height: 100%;
-background: var(–bg);
-color: var(–text-primary);
-font-family: -apple-system, BlinkMacSystemFont, ‘SF Pro Text’, ‘Helvetica Neue’, sans-serif;
--webkit-font-smoothing: antialiased;
-overflow-x: hidden;
-}
+html,body { height:100%; background:var(--bg); color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;
+    -webkit-font-smoothing:antialiased; overflow-x:hidden; }
 
-/* ===================== LAYOUT CONTAINER ===================== */
-.container {
-max-width: 680px;
-margin: 0 auto;
-padding: 20px 16px 40px;
-}
+.container { max-width:680px; margin:0 auto; padding:16px 16px 40px; }
 
-/* ===================== HEADER ===================== */
-header {
-text-align: center;
-padding: 24px 0 20px;
-}
-header h1 {
-font-size: 1.7em;
-font-weight: 600;
-color: var(–text-primary);
-letter-spacing: -0.3px;
-}
-header .subtitle {
-font-size: 0.78em;
-color: var(–text-secondary);
-letter-spacing: 1.2px;
-margin-top: 4px;
-text-transform: uppercase;
-}
+/* ──────────── HEADER ──────────── */
+header { text-align:center; padding:20px 0 14px; }
+header h1 { font-size:1.6em; font-weight:600; letter-spacing:-0.3px; }
+header .sub { font-size:0.74em; color:var(--txt2); letter-spacing:1.2px; margin-top:3px; text-transform:uppercase; }
 
-/* ===================== GROUPED SECTIONS (iOS style) ===================== */
-.section {
-background: var(–bg-card);
-border-radius: 12px;
-margin-bottom: 12px;
-overflow: hidden;
-}
-.section-header {
-padding: 10px 16px 4px;
-font-size: 0.72em;
-font-weight: 600;
-color: var(–text-secondary);
-text-transform: uppercase;
-letter-spacing: 1px;
-}
+/* ──────────── SECTION CARD ──────────── */
+.section { background:var(--bg-card); border-radius:12px; margin-bottom:10px; overflow:hidden; }
+.sec-hdr { padding:9px 16px 3px; font-size:0.7em; font-weight:600; color:var(--txt2);
+    text-transform:uppercase; letter-spacing:1px; }
 
-/* ===================== CONTROLS ===================== */
-.control-row {
-display: flex;
-padding: 10px 12px;
-gap: 8px;
-}
+/* ──────────── SEGMENTED CONTROL ──────────── */
+.seg { display:flex; background:var(--bg-inset); border-radius:8px; overflow:hidden; height:34px; margin:8px 12px; }
+.seg button { flex:1; border:none; background:transparent; color:var(--txt2);
+    font-size:0.86em; font-weight:500; cursor:pointer; font-family:inherit; transition:.15s; }
+.seg button.active { background:var(--bg-card); color:var(--txt); border-radius:6px;
+    margin:2px; height:calc(100% - 4px); box-shadow:0 1px 3px rgba(0,0,0,.4); }
 
-/* Segmented control – Balgrichtung */
-.seg-control {
-display: flex;
-flex: 1;
-background: var(–bg-inset);
-border-radius: 8px;
-overflow: hidden;
-height: 36px;
-}
-.seg-btn {
-flex: 1;
-border: none;
-background: transparent;
-color: var(–text-secondary);
-font-size: 0.88em;
-font-weight: 500;
-cursor: pointer;
-transition: background 0.2s, color 0.2s;
-font-family: inherit;
-}
-.seg-btn.active {
-background: var(–bg-card);
-color: var(–text-primary);
-box-shadow: 0 1px 3px rgba(0,0,0,0.4);
-border-radius: 6px;
-margin: 2px;
-height: calc(100% - 4px);
-}
+/* ──────────── MODE PILLS ──────────── */
+.mode-row { display:flex; gap:8px; padding:8px 12px; }
+.mode-pill { flex:1; height:34px; border:1px solid var(--sep); border-radius:8px;
+    background:transparent; color:var(--txt2); font-size:0.84em; font-weight:500;
+    cursor:pointer; font-family:inherit; transition:.15s; }
+.mode-pill.active { background:var(--accent-sub); border-color:var(--accent); color:var(--accent); }
 
-/* Modus-Umschaltung */
-.mode-row {
-display: flex;
-gap: 8px;
-padding: 10px 12px;
-}
-.mode-btn {
-flex: 1;
-height: 34px;
-border: 1px solid var(–separator);
-border-radius: 8px;
-background: transparent;
-color: var(–text-secondary);
-font-size: 0.82em;
-font-weight: 500;
-cursor: pointer;
-font-family: inherit;
-transition: all 0.2s;
-}
-.mode-btn.active {
-background: var(–accent-subtle);
-border-color: var(–accent);
-color: var(–accent);
-}
+/* ──────────── CHORD PANEL (under mode pills, same card) ──────────── */
+.chord-panel { display:none; padding:0 12px 12px; }
+.chord-panel.visible { display:block; }
+.chord-panel .cp-label { font-size:0.7em; font-weight:600; color:var(--txt2);
+    text-transform:uppercase; letter-spacing:1px; margin:10px 0 6px; }
 
-/* Stück-Select */
-.piece-row {
-padding: 8px 12px;
-}
-.piece-row select {
-width: 100%;
-height: 40px;
-background: var(–bg-inset);
-border: none;
-border-radius: 8px;
-color: var(–text-primary);
-font-size: 0.9em;
-font-family: inherit;
-padding: 0 12px;
--webkit-appearance: none;
-appearance: none;
-background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘12’ viewBox=‘0 0 12 12’%3E%3Cpath fill=’%238e8e93’ d=‘M2 4l4 4 4-4z’/%3E%3C/svg%3E”);
-background-repeat: no-repeat;
-background-position: right 12px center;
-}
-.piece-row select option { background: var(–bg-card); }
+/* Akkordtyp-Chips */
+.chip-row { display:flex; gap:6px; flex-wrap:wrap; }
+.chip { height:28px; padding:0 13px; border-radius:14px; border:1px solid var(--sep);
+    background:var(--bg-inset); color:var(--txt2); font-size:0.8em; font-weight:500;
+    font-family:inherit; cursor:pointer; transition:.12s; }
+.chip:active { opacity:.7; }
+.chip.active { background:var(--accent-sub); border-color:var(--accent); color:var(--accent); }
 
-/* Clear button */
-.clear-btn {
-display: block;
-width: calc(100% - 24px);
-margin: 8px 12px;
-height: 36px;
-background: transparent;
-border: 1px solid var(–separator);
-border-radius: 8px;
-color: var(–text-secondary);
-font-size: 0.85em;
-font-family: inherit;
-cursor: pointer;
-transition: background 0.15s;
-}
-.clear-btn:active { background: var(–bg-inset); }
+/* Grundton-Buttons – rechteckig, kompakt */
+.root-grid { display:flex; gap:5px; flex-wrap:wrap; margin-top:2px; }
+.root-btn { min-width:38px; height:34px; padding:0 10px; border-radius:6px;
+    border:1px solid var(--sep); background:var(--bg-inset); color:var(--txt2);
+    font-size:0.82em; font-weight:600; font-family:inherit; cursor:pointer; transition:.12s; }
+.root-btn:active { opacity:.7; }
+.root-btn.active { background:var(--accent-sub); border-color:var(--accent); color:var(--accent); }
 
-/* ===================== CHORD PANEL ===================== */
-.chord-panel {
-background: var(–bg-card);
-border-radius: 12px;
-margin-bottom: 12px;
-padding: 12px;
-display: none;
-}
-.chord-panel.visible { display: block; }
+/* ──────────── STÜCK SELECT ──────────── */
+.piece-row { padding:8px 12px; }
+.piece-row select { width:100%; height:38px; background:var(--bg-inset); border:none;
+    border-radius:8px; color:var(--txt); font-size:0.88em; font-family:inherit; padding:0 12px;
+    -webkit-appearance:none; appearance:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238e8e93' d='M2 4l4 4 4-4z'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right 12px center; }
+.piece-row select option { background:var(--bg-card); }
 
-.chord-panel .panel-label {
-font-size: 0.72em;
-font-weight: 600;
-color: var(–text-secondary);
-text-transform: uppercase;
-letter-spacing: 1px;
-margin-bottom: 8px;
-}
-.chip-row {
-display: flex;
-gap: 6px;
-flex-wrap: wrap;
-margin-bottom: 12px;
-}
-.chip {
-height: 30px;
-padding: 0 14px;
-border-radius: 15px;
-border: 1px solid var(–separator);
-background: var(–bg-inset);
-color: var(–text-secondary);
-font-size: 0.82em;
-font-weight: 500;
-font-family: inherit;
-cursor: pointer;
-transition: all 0.15s;
-}
-.chip:active { opacity: 0.7; }
-.chip.active {
-background: var(–accent-subtle);
-border-color: var(–accent);
-color: var(–accent);
-}
+/* ──────────── ACCORDION LAYOUT ──────────── */
+.layout-section { display:none; }
+.layout-section.visible { display:block; }
+.lay-title { font-size:0.7em; font-weight:600; color:var(--txt2); text-transform:uppercase;
+    letter-spacing:1px; padding:14px 2px 6px; }
 
-.chord-hint {
-font-size: 0.78em;
-color: var(–text-tertiary);
-line-height: 1.4;
-margin-top: 4px;
-}
+/* Diskant – 3 Reihen nebeneinander */
+.treble-side { display:flex; gap:8px; justify-content:center; align-items:flex-start; }
+.row { display:flex; flex-direction:column; gap:4px; align-items:center; }
+.row-label { font-size:0.66em; color:var(--txt3); font-weight:600; letter-spacing:0.7px;
+    text-align:center; margin-bottom:2px; }
 
-/* ===================== ACCORDION LAYOUT ===================== */
-.layout-section { display: none; }
-.layout-section.visible { display: block; }
-
-.layout-title {
-font-size: 0.72em;
-font-weight: 600;
-color: var(–text-secondary);
-text-transform: uppercase;
-letter-spacing: 1px;
-padding: 14px 4px 8px;
-}
-
-/* Diskant: 3 Reihen horizontal */
-.treble-side {
-display: flex;
-gap: 10px;
-justify-content: center;
-align-items: flex-start;
-}
-.row {
-display: flex;
-flex-direction: column;
-gap: 5px;
-align-items: center;
-}
-.row-label {
-font-size: 0.68em;
-color: var(–text-tertiary);
-font-weight: 600;
-letter-spacing: 0.8px;
-text-align: center;
-margin-bottom: 3px;
-}
-
-/* ===================== PERLMUTT BUTTONS ===================== */
+/* ──────────── PERLMUTT-TASTE ──────────── */
 .note-button {
-width: 68px;
-height: 68px;
-border-radius: 50%;
-background: linear-gradient(160deg, var(–pearl-top) 0%, var(–pearl-mid) 45%, var(–pearl-bot) 100%);
-border: 2px solid rgba(255,255,255,0.25);
-box-shadow:
-inset 0 2px 3px rgba(255,255,255,0.55),
-inset 0 -1px 2px rgba(0,0,0,0.12),
-0 3px 6px var(–pearl-shadow);
-display: flex;
-align-items: center;
-justify-content: center;
-cursor: pointer;
-position: relative;
-transition: transform 0.15s, box-shadow 0.15s;
--webkit-tap-highlight-color: transparent;
+    width:66px; height:66px; border-radius:50%;
+    background:linear-gradient(160deg, var(--p0) 0%, var(--p1) 42%, var(--p2) 100%);
+    border:1.5px solid rgba(255,255,255,.30);
+    box-shadow: inset 0 2px 3px rgba(255,255,255,.50),
+                inset 0 -1px 2px rgba(0,0,0,.10),
+                0 2px 5px var(--p-shadow);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; position:relative;
+    transition:transform .12s, box-shadow .12s, background .12s, border-color .12s;
 }
-/* Pearl gloss highlight */
-.note-button::before {
-content: ‘’;
-position: absolute;
-top: 8%; left: 18%;
-width: 38%; height: 35%;
-background: radial-gradient(ellipse, rgba(255,255,255,0.55) 0%, transparent 70%);
-border-radius: 50%;
-pointer-events: none;
-}
-.note-button .note-name {
-font-size: 0.88em;
-font-weight: 600;
-color: var(–pearl-text);
-position: relative;
-z-index: 1;
-text-align: center;
-line-height: 1.1;
-}
+/* Glanzfleck */
+.note-button::before { content:''; position:absolute; top:7%; left:17%;
+    width:38%; height:34%; border-radius:50%; pointer-events:none;
+    background:radial-gradient(ellipse, rgba(255,255,255,.52) 0%, transparent 70%); }
 
-/* Pressed state */
-.note-button:active { transform: scale(0.92); }
+.note-button .note-name { font-size:0.85em; font-weight:600; color:var(--p-text);
+    position:relative; z-index:1; text-align:center; line-height:1.1; }
+.note-button:active { transform:scale(.93); }
 
-/* Active (toggled on) – neutral dark */
+/* ── AKTIV (helles Grau) ── */
 .note-button.active {
-background: linear-gradient(160deg, #555 0%, #444 45%, #3a3a3a 100%);
-border-color: rgba(255,255,255,0.15);
-box-shadow:
-inset 0 2px 3px rgba(255,255,255,0.1),
-inset 0 -1px 2px rgba(0,0,0,0.3),
-0 2px 4px rgba(0,0,0,0.4);
+    background:linear-gradient(160deg, #585858 0%, var(--act-bg) 50%, #404040 100%);
+    border-color:rgba(255,255,255,.18);
+    box-shadow: inset 0 1px 2px rgba(255,255,255,.12),
+                inset 0 -1px 2px rgba(0,0,0,.25),
+                0 2px 4px rgba(0,0,0,.35);
 }
-.note-button.active .note-name { color: #f2f2f7; }
+.note-button.active .note-name { color:var(--act-txt); }
+.note-button.active::before { opacity:.15; } /* Glanz abschwächen */
 
-/* ROOT TONE – the only colour accent in the whole app */
+/* ── GRUNDTON (dunkles Grau + dünner Rand) ── */
 .note-button.root {
-border: 3px solid var(–accent);
-box-shadow:
-inset 0 2px 3px rgba(255,255,255,0.55),
-inset 0 -1px 2px rgba(0,0,0,0.12),
-0 3px 6px var(–pearl-shadow),
-0 0 0 2px var(–accent-subtle);
+    border:2.5px solid var(--accent);
+    box-shadow: inset 0 2px 3px rgba(255,255,255,.50),
+                inset 0 -1px 2px rgba(0,0,0,.10),
+                0 2px 5px var(--p-shadow),
+                0 0 0 2px var(--accent-sub);
 }
 .note-button.root.active {
-background: linear-gradient(160deg, #1a5fa8 0%, #0a84ff 50%, #0066cc 100%);
-border-color: var(–accent);
-box-shadow:
-inset 0 2px 3px rgba(255,255,255,0.15),
-0 0 12px rgba(10,132,255,0.45);
+    background:linear-gradient(160deg, #424242 0%, var(--root-bg) 50%, #2e2e2e 100%);
+    border-color:var(--accent);
+    box-shadow: inset 0 1px 2px rgba(255,255,255,.08),
+                inset 0 -1px 2px rgba(0,0,0,.30),
+                0 0 0 2px var(--accent-sub),
+                0 0 8px rgba(10,132,255,.3);
 }
-.note-button.root.active .note-name { color: #fff; }
+.note-button.root.active .note-name { color:var(--root-txt); }
 
-/* Scale-tone hint – very subtle ring */
+/* ── SKALENTON (sehr leichter Rand-Hinweis) ── */
 .note-button.scale-tone {
-border-color: rgba(255,255,255,0.45);
-box-shadow:
-inset 0 2px 3px rgba(255,255,255,0.55),
-inset 0 -1px 2px rgba(0,0,0,0.12),
-0 3px 6px var(–pearl-shadow),
-0 0 0 2px rgba(142,142,147,0.25);
+    box-shadow: inset 0 2px 3px rgba(255,255,255,.50),
+                inset 0 -1px 2px rgba(0,0,0,.10),
+                0 2px 5px var(--p-shadow),
+                0 0 0 2px rgba(142,142,147,.22);
 }
 
-/* ===================== BASS BUTTONS ===================== */
-.bass-container {
-display: flex;
-gap: 24px;
-justify-content: center;
-margin-top: 6px;
-}
-.bass-column {
-display: flex;
-flex-direction: column;
-gap: 5px;
-align-items: center;
-}
-.bass-column-label {
-font-size: 0.68em;
-color: var(–text-tertiary);
-font-weight: 600;
-letter-spacing: 0.8px;
-margin-bottom: 3px;
-}
+/* ──────────── BASS-TASTE ──────────── */
+.bass-container { display:flex; gap:20px; justify-content:center; margin-top:4px; }
+.bass-column { display:flex; flex-direction:column; gap:4px; align-items:center; }
+.bass-col-label { font-size:0.66em; color:var(--txt3); font-weight:600;
+    letter-spacing:0.7px; margin-bottom:2px; }
 
 .bass-button {
-width: 58px;
-height: 58px;
-border-radius: 50%;
-background: linear-gradient(160deg, var(–pearl-top) 0%, var(–pearl-mid) 45%, var(–pearl-bot) 100%);
-border: 2px solid rgba(255,255,255,0.25);
-box-shadow:
-inset 0 2px 3px rgba(255,255,255,0.55),
-inset 0 -1px 2px rgba(0,0,0,0.12),
-0 3px 6px var(–pearl-shadow);
-display: flex;
-align-items: center;
-justify-content: center;
-cursor: pointer;
-position: relative;
-transition: transform 0.15s, box-shadow 0.15s;
-font-size: 0.9em;
-font-weight: 700;
-color: var(–pearl-text);
--webkit-tap-highlight-color: transparent;
+    width:54px; height:54px; border-radius:50%;
+    background:linear-gradient(160deg, var(--p0) 0%, var(--p1) 42%, var(--p2) 100%);
+    border:1.5px solid rgba(255,255,255,.30);
+    box-shadow: inset 0 2px 3px rgba(255,255,255,.50),
+                inset 0 -1px 2px rgba(0,0,0,.10),
+                0 2px 5px var(--p-shadow);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; position:relative;
+    font-size:0.88em; font-weight:700; color:var(--p-text);
+    transition:transform .12s, box-shadow .12s, background .12s;
 }
-.bass-button::before {
-content: ‘’;
-position: absolute;
-top: 8%; left: 18%;
-width: 38%; height: 35%;
-background: radial-gradient(ellipse, rgba(255,255,255,0.55) 0%, transparent 70%);
-border-radius: 50%;
-pointer-events: none;
-}
-.bass-button:active { transform: scale(0.9); }
-
+.bass-button::before { content:''; position:absolute; top:7%; left:17%;
+    width:38%; height:34%; border-radius:50%; pointer-events:none;
+    background:radial-gradient(ellipse, rgba(255,255,255,.52) 0%, transparent 70%); }
+.bass-button:active { transform:scale(.90); }
 .bass-button.active {
-background: linear-gradient(160deg, #555 0%, #444 45%, #3a3a3a 100%);
-border-color: rgba(255,255,255,0.15);
-box-shadow:
-inset 0 2px 3px rgba(255,255,255,0.1),
-inset 0 -1px 2px rgba(0,0,0,0.3),
-0 2px 4px rgba(0,0,0,0.4);
-color: #f2f2f7;
+    background:linear-gradient(160deg, #585858 0%, var(--act-bg) 50%, #404040 100%);
+    border-color:rgba(255,255,255,.18);
+    box-shadow: inset 0 1px 2px rgba(255,255,255,.12),
+                inset 0 -1px 2px rgba(0,0,0,.25),
+                0 2px 4px rgba(0,0,0,.35);
+    color:var(--act-txt);
 }
+.bass-button.active::before { opacity:.15; }
+.bass-button.is-chord { font-size:0.80em; }
 
-/* Bass-Kleinbuchstabe = Dreiklang, optisch etwas kleiner */
-.bass-button.is-chord { font-size: 0.82em; }
+/* ──────────── INFO PANEL ──────────── */
+.info-panel { background:var(--bg-card); border-radius:12px; margin-top:10px; padding:12px 16px; display:none; }
+.info-panel.visible { display:block; }
+.info-panel .ip-title { font-size:0.7em; font-weight:600; color:var(--txt2);
+    text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
+.info-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+.info-item .il { font-size:0.7em; color:var(--txt3); margin-bottom:1px; }
+.info-item .iv { font-size:0.88em; color:var(--txt); font-weight:500; }
 
-/* ===================== INFO PANEL ===================== */
-.info-panel {
-background: var(–bg-card);
-border-radius: 12px;
-margin-top: 12px;
-padding: 12px 16px;
-display: none;
-}
-.info-panel.visible { display: block; }
-.info-panel .info-title {
-font-size: 0.72em;
-font-weight: 600;
-color: var(–text-secondary);
-text-transform: uppercase;
-letter-spacing: 1px;
-margin-bottom: 8px;
-}
-.info-grid {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 8px;
-}
-.info-item .info-label {
-font-size: 0.72em;
-color: var(–text-tertiary);
-margin-bottom: 2px;
-}
-.info-item .info-value {
-font-size: 0.9em;
-color: var(–text-primary);
-font-weight: 500;
-}
+/* ──────────── LEGEND ──────────── */
+.legend { background:var(--bg-card); border-radius:12px; margin-top:10px; padding:10px 16px; display:none; }
+.legend.visible { display:block; }
+.legend .lg-title { font-size:0.7em; font-weight:600; color:var(--txt2);
+    text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
+.lg-row { display:flex; align-items:center; gap:9px; margin-bottom:4px; font-size:0.8em; color:var(--txt2); }
+.lg-sw { width:20px; height:20px; border-radius:50%; flex-shrink:0; }
+.lg-sw.pearl  { background:linear-gradient(160deg,var(--p0),var(--p2)); border:1.5px solid rgba(255,255,255,.30); }
+.lg-sw.act    { background:var(--act-bg); border:1.5px solid rgba(255,255,255,.18); }
+.lg-sw.root   { background:var(--root-bg); border:2.5px solid var(--accent); box-shadow:0 0 0 2px var(--accent-sub); }
+.lg-sw.scale  { background:linear-gradient(160deg,var(--p0),var(--p2)); border:1.5px solid rgba(255,255,255,.30);
+    box-shadow:0 0 0 2px rgba(142,142,147,.22); }
 
-/* ===================== LEGEND ===================== */
-.legend {
-background: var(–bg-card);
-border-radius: 12px;
-margin-top: 12px;
-padding: 12px 16px;
-display: none;
-}
-.legend.visible { display: block; }
-.legend .legend-title {
-font-size: 0.72em;
-font-weight: 600;
-color: var(–text-secondary);
-text-transform: uppercase;
-letter-spacing: 1px;
-margin-bottom: 8px;
-}
-.legend-row {
-display: flex;
-align-items: center;
-gap: 10px;
-margin-bottom: 5px;
-font-size: 0.82em;
-color: var(–text-secondary);
-}
-.legend-swatch {
-width: 22px;
-height: 22px;
-border-radius: 50%;
-flex-shrink: 0;
-}
-.legend-swatch.pearl {
-background: linear-gradient(160deg, var(–pearl-top), var(–pearl-bot));
-border: 2px solid rgba(255,255,255,0.25);
-}
-.legend-swatch.active-swatch {
-background: #444;
-border: 2px solid rgba(255,255,255,0.15);
-}
-.legend-swatch.root-swatch {
-background: linear-gradient(160deg, var(–pearl-top), var(–pearl-bot));
-border: 3px solid var(–accent);
-box-shadow: 0 0 0 2px var(–accent-subtle);
-}
-.legend-swatch.scale-swatch {
-background: linear-gradient(160deg, var(–pearl-top), var(–pearl-bot));
-border: 2px solid rgba(142,142,147,0.5);
-box-shadow: 0 0 0 2px rgba(142,142,147,0.25);
-}
-
-/* ===================== RESPONSIVE ===================== */
-@media (max-width: 400px) {
-.note-button { width: 58px; height: 58px; }
-.note-button .note-name { font-size: 0.8em; }
-.bass-button { width: 50px; height: 50px; font-size: 0.82em; }
-.treble-side { gap: 6px; }
-.bass-container { gap: 16px; }
+/* ──────────── RESPONSIVE ──────────── */
+@media (max-width:400px) {
+    .note-button { width:56px; height:56px; }
+    .note-button .note-name { font-size:0.78em; }
+    .bass-button { width:46px; height:46px; font-size:0.80em; }
+    .treble-side { gap:5px; }
+    .bass-container { gap:14px; }
+    .root-grid { gap:4px; }
+    .root-btn { min-width:34px; height:30px; font-size:0.78em; }
 }
 </style>
-
 </head>
 <body>
 <div class="container">
 
-<!-- HEADER -->
-
 <header>
     <h1>🪗 Castagnari Benny Visualizer</h1>
-    <p class="subtitle">C/G · 3-reihig · Heim · Spieler-Perspektive</p>
+    <p class="sub">C/G · 3-reihig · Heim · Spieler-Perspektive</p>
 </header>
 
-<!-- BALGRICHTUNG + MODUS -->
-
+<!-- ── STEUERUNG ── -->
 <div class="section">
-    <div class="section-header">Balgrichtung</div>
-    <div class="control-row">
-        <div class="seg-control">
-            <button class="seg-btn active" data-dir="pull">← Pull (Ziehen)</button>
-            <button class="seg-btn" data-dir="push">Push (Drücken) →</button>
+    <div class="sec-hdr">Balgrichtung</div>
+    <div class="seg">
+        <button class="active" data-dir="pull">← Pull (Ziehen)</button>
+        <button data-dir="push">Push (Drücken) →</button>
+    </div>
+
+    <div class="sec-hdr" style="margin-top:6px;">Modus</div>
+    <div class="mode-row">
+        <button class="mode-pill active" data-mode="normal">Normal</button>
+        <button class="mode-pill" data-mode="chord">🎼 Akkorde</button>
+    </div>
+
+    <!-- CHORD PANEL – direkt unter den Mode-Pills, gleiche Karte -->
+    <div class="chord-panel" id="chordPanel">
+        <div class="cp-label">Akkordtyp</div>
+        <div class="chip-row" id="chordTypeRow">
+            <button class="chip active" data-ctype="maj">Dur</button>
+            <button class="chip" data-ctype="min">Moll</button>
+            <button class="chip" data-ctype="7">Dom 7</button>
+            <button class="chip" data-ctype="maj7">Maj 7</button>
+            <button class="chip" data-ctype="dim">dim</button>
+            <button class="chip" data-ctype="aug">aug</button>
+        </div>
+        <div class="cp-label">Modale Skalen</div>
+        <div class="chip-row" id="scaleRow">
+            <button class="chip" data-scale="dorian">Dorisch</button>
+            <button class="chip" data-scale="mixolydian">Mixolydisch</button>
+            <button class="chip" data-scale="phrygian">Phrygisch</button>
+            <button class="chip" data-scale="lydian">Lydisch</button>
+        </div>
+        <div class="cp-label">Grundton</div>
+        <div class="root-grid" id="rootGrid">
+            <!-- JS bestückt diese Zeile -->
         </div>
     </div>
-    <div class="section-header" style="margin-top:4px;">Modus</div>
-    <div class="mode-row">
-        <button class="mode-btn active" data-mode="normal">Normal</button>
-        <button class="mode-btn" data-mode="chord">🎼 Akkorde</button>
+
+    <!-- STÜCK (nur im Normal-Modus sichtbar) -->
+    <div id="pieceSection">
+        <div class="sec-hdr" style="margin-top:6px;">Stück</div>
+        <div class="piece-row">
+            <select id="pieceSelect">
+                <option value="">— Stück wählen —</option>
+                <option value="bourree-avignon">Bourrée d'Avignon (D-moll)</option>
+                <option value="bourree-malochet">Bourrée à Malochet (G-Dur)</option>
+                <option value="chapelloise">Chapelloise (G-Dur)</option>
+                <option value="scottish-berry">Scottish du Berry (G-Dur)</option>
+                <option value="polka-tailleurs">Polka des Tailleurs (C-Dur)</option>
+            </select>
+        </div>
     </div>
 </div>
 
-<!-- AKKORD-PANEL -->
-
-<div class="chord-panel" id="chordPanel">
-    <div class="panel-label">Akkordtyp</div>
-    <div class="chip-row" id="chordTypeRow">
-        <button class="chip active" data-ctype="maj">Dur</button>
-        <button class="chip" data-ctype="min">Moll</button>
-        <button class="chip" data-ctype="7">Dom 7</button>
-        <button class="chip" data-ctype="maj7">Maj 7</button>
-        <button class="chip" data-ctype="dim">dim</button>
-        <button class="chip" data-ctype="aug">aug</button>
-    </div>
-    <div class="panel-label">Modale Skalen</div>
-    <div class="chip-row" id="scaleRow">
-        <button class="chip" data-scale="dorian">Dorisch</button>
-        <button class="chip" data-scale="mixolydian">Mixolydisch</button>
-        <button class="chip" data-scale="phrygian">Phrygisch</button>
-        <button class="chip" data-scale="lydian">Lydisch</button>
-    </div>
-    <div class="chord-hint">Klicke auf einen Bass-Knopf → Diskant zeigt den Akkord.<br>
-    <strong style="color:var(--text-secondary);">Großbuchstabe</strong> = Grundton · <strong style="color:var(--text-secondary);">Kleinbuchstabe</strong> = Dreiklang</div>
-</div>
-
-<!-- STÜCK AUSWÄHLEN -->
-
-<div class="section">
-    <div class="section-header">Stück</div>
-    <div class="piece-row">
-        <select id="pieceSelect">
-            <option value="">— Stück wählen —</option>
-            <option value="bourree-avignon">Bourrée d'Avignon (D-moll)</option>
-            <option value="bourree-malochet">Bourrée à Malochet (G-Dur)</option>
-            <option value="chapelloise">Chapelloise (G-Dur)</option>
-            <option value="scottish-berry">Scottish du Berry (G-Dur)</option>
-            <option value="polka-tailleurs">Polka des Tailleurs (C-Dur)</option>
-        </select>
-    </div>
-    <button class="clear-btn" id="clearBtn">Alle löschen</button>
-</div>
-
-<!-- ACCORDION LAYOUT – PULL -->
-
+<!-- ── AKKORDEON – PULL ── -->
 <div class="layout-section visible" id="pull-layout">
-    <div class="layout-title">Diskant – Pull (Ziehen) – Sicht von oben</div>
+    <div class="lay-title">Diskant – Pull (Ziehen) – Sicht von oben</div>
     <div class="treble-side" id="treble-pull"></div>
-    <div class="layout-title" style="margin-top:18px;">Bass – Pull</div>
+    <div class="lay-title" style="margin-top:16px;">Bass – Pull</div>
     <div class="bass-container" id="bass-pull"></div>
 </div>
 
-<!-- ACCORDION LAYOUT – PUSH -->
-
+<!-- ── AKKORDEON – PUSH ── -->
 <div class="layout-section" id="push-layout">
-    <div class="layout-title">Diskant – Push (Drücken) – Sicht von oben</div>
+    <div class="lay-title">Diskant – Push (Drücken) – Sicht von oben</div>
     <div class="treble-side" id="treble-push"></div>
-    <div class="layout-title" style="margin-top:18px;">Bass – Push</div>
+    <div class="lay-title" style="margin-top:16px;">Bass – Push</div>
     <div class="bass-container" id="bass-push"></div>
 </div>
 
-<!-- INFO PANEL -->
-
+<!-- ── INFO (nur Normal-Modus + Stück gewählt) ── -->
 <div class="info-panel" id="infoPanel">
-    <div class="info-title">Stück-Info</div>
+    <div class="ip-title">Stück-Info</div>
     <div class="info-grid">
-        <div class="info-item"><div class="info-label">Tonart</div><div class="info-value" id="infoKey">—</div></div>
-        <div class="info-item"><div class="info-label">Hauptreihe</div><div class="info-value" id="infoRow">—</div></div>
-        <div class="info-item"><div class="info-label">Helferreihe</div><div class="info-value" id="infoHelper">—</div></div>
-        <div class="info-item"><div class="info-label">Balg</div><div class="info-value" id="infoBellows">—</div></div>
+        <div class="info-item"><div class="il">Tonart</div><div class="iv" id="infoKey">—</div></div>
+        <div class="info-item"><div class="il">Hauptreihe</div><div class="iv" id="infoRow">—</div></div>
+        <div class="info-item"><div class="il">Helferreihe</div><div class="iv" id="infoHelper">—</div></div>
+        <div class="info-item"><div class="il">Balg</div><div class="iv" id="infoBellows">—</div></div>
     </div>
 </div>
 
-<!-- LEGEND -->
-
+<!-- ── LEGENDE (nur Akkordmodus) ── -->
 <div class="legend" id="legend">
-    <div class="legend-title">Legende</div>
-    <div class="legend-row"><div class="legend-swatch pearl"></div>Taste – nicht aktiv</div>
-    <div class="legend-row"><div class="legend-swatch active-swatch"></div>Taste – aktiv (angetippt / Stück)</div>
-    <div class="legend-row"><div class="legend-swatch root-swatch"></div>Grundton des Akkords</div>
-    <div class="legend-row"><div class="legend-swatch scale-swatch"></div>Skalenton (bei modalen Skalen)</div>
+    <div class="lg-title">Legende</div>
+    <div class="lg-row"><div class="lg-sw pearl"></div>Taste – nicht aktiv (Perlmutt)</div>
+    <div class="lg-row"><div class="lg-sw act"></div>Taste – aktiv (helles Grau)</div>
+    <div class="lg-row"><div class="lg-sw root"></div>Grundton des Akkords (dunkles Grau)</div>
+    <div class="lg-row"><div class="lg-sw scale"></div>Skalenton (bei modalen Skalen)</div>
 </div>
 
 </div><!-- /container -->
 
+<!-- ══════════════════ SCRIPT ══════════════════ -->
 <script>
-// ─── LAYOUT DATA ────────────────────────────────────────────
+// ─── LAYOUT ─────────────────────────────────────────────────
 const layout = {
     pull: {
         treble: {
@@ -622,10 +332,7 @@ const layout = {
             C:    ['D 11','B 10','A 9','F 8','D 7','B 6','A 5','F 4','D 3','B 2','G 1'],
             G:    ['C 12','A 11','F# 10','E 9','C 8','A 7','F# 6','E 5','C 4','A 3','F# 2','E 1']
         },
-        bass: {
-            col1: ['G','g','D','d','B','b'],
-            col2: ['F','f','A','a','Bb','bb']
-        }
+        bass: { col1:['G','g','D','d','B','b'], col2:['F','f','A','a','Bb','bb'] }
     },
     push: {
         treble: {
@@ -633,258 +340,341 @@ const layout = {
             C:    ['G 11','E 10','C 9','G 8','E 7','C 6','G 5','E 4','C 3','G 2','E 1'],
             G:    ['G 12','D 11','B 10','G 9','D 8','B 7','G 6','D 5','B 4','G 3','D 2','B 1']
         },
-        bass: {
-            col1: ['C','c','G','g','Ab','ab'],
-            col2: ['F','f','E','e','Eb','eb']
-        }
+        bass: { col1:['C','c','G','g','Ab','ab'], col2:['F','f','E','e','Eb','eb'] }
     }
 };
 
 // ─── PIECES ─────────────────────────────────────────────────
 const pieces = {
     'bourree-avignon': {
-        name: "Bourrée d'Avignon", key: "D-moll",
-        row: "G + Helferreihe", helper: "E, F (zwingend)", bellows: "≈ 90 % Pull",
-        notes: {
-            pull:  { treble: ['E 9','D 7','A 7','F# 10','C 8'], bass: ['D','d','A','a'] },
-            push: { treble: ['D 11','G 9'],                      bass: [] }
-        }
+        name:"Bourrée d'Avignon", key:"D-moll", row:"G + Helferreihe",
+        helper:"E, F (zwingend)", bellows:"≈ 90 % Pull",
+        notes:{ pull:{ treble:['E 9','D 7','A 7','F# 10','C 8'], bass:['D','d','A','a'] },
+                push:{ treble:['D 11','G 9'], bass:[] } }
     },
     'bourree-malochet': {
-        name: "Bourrée à Malochet", key: "G-Dur (dorisch)",
-        row: "G-Reihe + Helfer", helper: "F für dorischen Charakter", bellows: "kurze Akzente",
-        notes: {
-            pull:  { treble: ['A 7','F# 10','E 9','C 8','A 3'], bass: ['G','g','D','d'] },
-            push: { treble: ['G 9','D 8','B 10'],               bass: ['G','g'] }
-        }
+        name:"Bourrée à Malochet", key:"G-Dur (dorisch)", row:"G-Reihe + Helfer",
+        helper:"F für dorischen Charakter", bellows:"kurze Akzente",
+        notes:{ pull:{ treble:['A 7','F# 10','E 9','C 8','A 3'], bass:['G','g','D','d'] },
+                push:{ treble:['G 9','D 8','B 10'], bass:['G','g'] } }
     },
     'chapelloise': {
-        name: "Chapelloise", key: "G-Dur",
-        row: "G-Reihe", helper: "nicht nötig", bellows: "extrem stabil, lange Push-Phasen",
-        notes: {
-            pull:  { treble: ['A 7','F# 6','E 5','C 4','A 3'],  bass: ['G','g'] },
-            push: { treble: ['G 12','G 9','D 11','B 10','G 6'], bass: ['G','g','C','c'] }
-        }
+        name:"Chapelloise", key:"G-Dur", row:"G-Reihe",
+        helper:"nicht nötig", bellows:"extrem stabil, lange Push-Phasen",
+        notes:{ pull:{ treble:['A 7','F# 6','E 5','C 4','A 3'], bass:['G','g'] },
+                push:{ treble:['G 12','G 9','D 11','B 10','G 6'], bass:['G','g','C','c'] } }
     },
     'scottish-berry': {
-        name: "Scottish du Berry", key: "G-Dur",
-        row: "G + C", helper: "c / d zum Glätten", bellows: "bewusst rhythmisch",
-        notes: {
-            pull:  { treble: ['A 7','F# 10','E 9','C 8','B 10'], bass: ['G','g','D','d'] },
-            push: { treble: ['G 9','D 8','B 10','E 10'],         bass: ['G','g','C','c'] }
-        }
+        name:"Scottish du Berry", key:"G-Dur", row:"G + C",
+        helper:"c / d zum Glätten", bellows:"bewusst rhythmisch",
+        notes:{ pull:{ treble:['A 7','F# 10','E 9','C 8','B 10'], bass:['G','g','D','d'] },
+                push:{ treble:['G 9','D 8','B 10','E 10'], bass:['G','g','C','c'] } }
     },
     'polka-tailleurs': {
-        name: "Polka des Tailleurs", key: "C-Dur",
-        row: "C-Reihe", helper: "optional f", bellows: "regelmäßig, vorhersehbar",
-        notes: {
-            pull:  { treble: ['B 6','A 5','F 4','D 3','B 2'], bass: ['G','g'] },
-            push: { treble: ['C 9','E 10','G 8','C 6'],       bass: ['G','g','C','c'] }
-        }
+        name:"Polka des Tailleurs", key:"C-Dur", row:"C-Reihe",
+        helper:"optional f", bellows:"regelmäßig, vorhersehbar",
+        notes:{ pull:{ treble:['B 6','A 5','F 4','D 3','B 2'], bass:['G','g'] },
+                push:{ treble:['C 9','E 10','G 8','C 6'], bass:['G','g','C','c'] } }
     }
 };
 
-// ─── MUSIC THEORY ───────────────────────────────────────────
-const chordFormulas = { maj:[0,4,7], min:[0,3,7], '7':[0,4,7,10], maj7:[0,4,7,11], dim:[0,3,6], aug:[0,4,8] };
-const scaleFormulas = { dorian:[0,2,3,5,7,9,10], mixolydian:[0,2,4,5,7,9,10], phrygian:[0,1,3,5,7,8,10], lydian:[0,2,4,6,7,9,11] };
-const noteToSemitone = { 'C':0,'C#':1,'Db':1,'D':2,'D#':3,'Eb':3,'E':4,'F':5,'F#':6,'Gb':6,'G':7,'G#':8,'Ab':8,'A':9,'A#':10,'Bb':10,'B':11 };
-const semitoneToNote = ['C','C#','D','Eb','E','F','F#','G','G#','A','Bb','B'];
+// ─── THEORIE ────────────────────────────────────────────────
+const CHORD = { maj:[0,4,7], min:[0,3,7], '7':[0,4,7,10], maj7:[0,4,7,11], dim:[0,3,6], aug:[0,4,8] };
+const SCALE = { dorian:[0,2,3,5,7,9,10], mixolydian:[0,2,4,5,7,9,10], phrygian:[0,1,3,5,7,8,10], lydian:[0,2,4,6,7,9,11] };
+const N2S = { C:0,'C#':1,Db:1,D:2,'D#':3,Eb:3,E:4,F:5,'F#':6,Gb:6,G:7,'G#':8,Ab:8,A:9,'A#':10,Bb:10,B:11 };
+const S2N = ['C','C#','D','Eb','E','F','F#','G','G#','A','Bb','B'];
+
+// Grundtöne die auf Benny Sinn machen (aus den tatsächlichen Bass-Tönen beider Richtungen)
+const ROOTS = ['C','D','E','F','G','A','Bb','Ab','Eb'];
 
 // ─── STATE ──────────────────────────────────────────────────
-let currentDir       = 'pull';
-let currentMode      = 'normal';
-let activeNotes      = new Set();
-let highlightRoot    = null;
-let highlightScale   = new Set();
-let selectedChordType= 'maj';
-let selectedScale    = null;
+let dir          = 'pull';
+let mode         = 'normal';   // 'normal' | 'chord'
+let activeNotes  = new Set();  // "pull-treble-E 9"
+let chordRoot    = null;       // aktuell gewählter Grundton im Akkordmodus
+let chordType    = 'maj';      // aktuell gewählter Akkordtyp
+let scaleType    = null;       // null oder 'dorian' …
 
-// ─── HELPER ─────────────────────────────────────────────────
-function pureName(label) { return label.replace(/\s*\d+$/, '').trim(); }
+// ─── UTILS ──────────────────────────────────────────────────
+/** "F# 10" → "F#" */
+function pureName(s){ return s.replace(/\s*\d+$/,'').trim(); }
+
+/** Aus einem Bass-Label ("Bb", "bb", "Ab") den reinen Grundton extrahieren */
+function bassToRoot(s){
+    // Großbuchstabe + optionales b/# → z.B. "Bb", "Ab", "G"
+    const m = s.match(/^([A-G][b#]?)/);
+    return m ? m[1] : s.charAt(0).toUpperCase();
+}
 
 // ─── RENDER ─────────────────────────────────────────────────
-function renderAll() { ['pull','push'].forEach(d => { renderTreble(d); renderBass(d); }); }
+function renderAll(){ ['pull','push'].forEach(d=>{ renderTreble(d); renderBass(d); }); }
 
-function renderTreble(dir) {
-    const cont = document.getElementById('treble-' + dir);
+function renderTreble(d){
+    const cont = document.getElementById('treble-'+d);
     cont.innerHTML = '';
-    ['Heim','C','G'].forEach(rowName => {
-        const row = document.createElement('div');
-        row.className = 'row';
+    ['Heim','C','G'].forEach(row => {
+        const div = document.createElement('div');
+        div.className = 'row';
         const lbl = document.createElement('div');
         lbl.className = 'row-label';
-        lbl.textContent = rowName === 'Heim' ? 'HELFER (10)' : rowName === 'C' ? 'C-REIHE (11)' : 'G-REIHE (12)';
-        row.appendChild(lbl);
-        layout[dir].treble[rowName].forEach(note => {
+        lbl.textContent = row==='Heim'?'HELFER (10)':row==='C'?'C-REIHE (11)':'G-REIHE (12)';
+        div.appendChild(lbl);
+        layout[d].treble[row].forEach(note => {
             const btn = document.createElement('div');
             btn.className = 'note-button';
             btn.dataset.note = note;
-            const span = document.createElement('div');
-            span.className = 'note-name';
-            span.textContent = note;
-            btn.appendChild(span);
-            btn.addEventListener('click', () => onTrebleClick(note, dir));
-            row.appendChild(btn);
+            const sp = document.createElement('div');
+            sp.className = 'note-name';
+            sp.textContent = note;
+            btn.appendChild(sp);
+            btn.addEventListener('click', ()=> onTrebleClick(note, d));
+            div.appendChild(btn);
         });
-        cont.appendChild(row);
+        cont.appendChild(div);
     });
-    refreshStyles(dir);
+    applyStyles(d);
 }
 
-function renderBass(dir) {
-    const cont = document.getElementById('bass-' + dir);
+function renderBass(d){
+    const cont = document.getElementById('bass-'+d);
     cont.innerHTML = '';
     ['col1','col2'].forEach(col => {
         const column = document.createElement('div');
         column.className = 'bass-column';
         const lbl = document.createElement('div');
-        lbl.className = 'bass-column-label';
-        lbl.textContent = 'Spalte ' + (col === 'col1' ? '1' : '2');
+        lbl.className = 'bass-col-label';
+        lbl.textContent = 'Spalte '+(col==='col1'?'1':'2');
         column.appendChild(lbl);
-        layout[dir].bass[col].forEach(note => {
+        layout[d].bass[col].forEach(note => {
             const btn = document.createElement('div');
             btn.className = 'bass-button';
-            if (note !== note.toUpperCase()) btn.classList.add('is-chord');
+            if(note !== note.toUpperCase()) btn.classList.add('is-chord');
             btn.dataset.note = note;
             btn.textContent  = note;
-            btn.addEventListener('click', () => onBassClick(note, dir));
+            btn.addEventListener('click', ()=> onBassClick(note, d));
             column.appendChild(btn);
         });
         cont.appendChild(column);
     });
-    refreshStyles(dir);
+    applyStyles(d);
 }
 
-// ─── STYLE REFRESH ──────────────────────────────────────────
-function refreshStyles(dir) {
-    document.querySelectorAll('#treble-' + dir + ' .note-button').forEach(btn => {
+// Grundton-Buttons bestücken
+function renderRootGrid(){
+    const grid = document.getElementById('rootGrid');
+    grid.innerHTML = '';
+    ROOTS.forEach(r => {
+        const btn = document.createElement('button');
+        btn.className = 'root-btn';
+        btn.dataset.root = r;
+        btn.textContent  = r;
+        btn.addEventListener('click', ()=> selectRoot(r));
+        grid.appendChild(btn);
+    });
+}
+
+// ─── STYLES ANWENDEN ────────────────────────────────────────
+function applyStyles(d){
+    // Berechne Akkord-Töne wenn nötig
+    let rootSet   = new Set();
+    let chordSet  = new Set();
+    if(mode === 'chord' && chordRoot){
+        rootSet.add(chordRoot);
+        const formula = scaleType ? SCALE[scaleType] : CHORD[chordType];
+        const base = N2S[chordRoot];
+        formula.forEach(i => chordSet.add(S2N[(base+i)%12]));
+    }
+
+    // Diskant
+    document.querySelectorAll('#treble-'+d+' .note-button').forEach(btn => {
         const note = btn.dataset.note;
-        const key  = dir + '-treble-' + note;
+        const key  = d+'-treble-'+note;
         const name = pureName(note);
-        btn.classList.toggle('active',     activeNotes.has(key));
-        btn.classList.toggle('root',       highlightRoot === name);
-        btn.classList.toggle('scale-tone', highlightScale.has(name) && highlightRoot !== name);
+
+        btn.classList.remove('active','root','scale-tone');
+
+        if(mode==='chord'){
+            // In Akkordmodus: Grundton dunkel, andere Akkordtöne aktiv (hell), Rest neutral
+            if(rootSet.has(name)){
+                btn.classList.add('root','active');
+            } else if(chordSet.has(name)){
+                btn.classList.add('active');
+            }
+        } else {
+            // Normal: einfach aktiv/nicht-aktiv
+            if(activeNotes.has(key)) btn.classList.add('active');
+        }
+
+        // Skalenton-Rand (nur wenn Skale gewählt und nicht schon root/active)
+        if(mode==='chord' && scaleType && chordSet.has(name) && !rootSet.has(name)){
+            btn.classList.add('scale-tone');
+        }
     });
-    document.querySelectorAll('#bass-' + dir + ' .bass-button').forEach(btn => {
-        btn.classList.toggle('active', activeNotes.has(dir + '-bass-' + btn.dataset.note));
+
+    // Bass
+    document.querySelectorAll('#bass-'+d+' .bass-button').forEach(btn => {
+        const note = btn.dataset.note;
+        btn.classList.remove('active');
+        if(mode==='normal' && activeNotes.has(d+'-bass-'+note)){
+            btn.classList.add('active');
+        }
+        // Im Akkordmodus: Bass passiv lassen (keine Hervorhebung)
     });
 }
 
-// ─── CLICK HANDLERS ─────────────────────────────────────────
-function onTrebleClick(note, dir) {
-    if (currentMode === 'chord') return;
-    const key = dir + '-treble-' + note;
+// ─── KLICK-HANDLER ──────────────────────────────────────────
+function onTrebleClick(note, d){
+    if(mode === 'chord') return; // im Akkordmodus nicht manuell togglebar
+    const key = d+'-treble-'+note;
     activeNotes.has(key) ? activeNotes.delete(key) : activeNotes.add(key);
-    refreshStyles(dir);
+    applyStyles(d);
 }
 
-function onBassClick(note, dir) {
-    if (currentMode === 'normal') {
-        const key = dir + '-bass-' + note;
-        activeNotes.has(key) ? activeNotes.delete(key) : activeNotes.add(key);
-        refreshStyles(dir);
+function onBassClick(note, d){
+    if(mode === 'chord') return; // im Akkordmodus: Bass-Tasten passiv
+
+    // Normal-Modus: Großbuchstabe = Dur-Triade anzeigen, Kleinbuchstabe = Moll-Triade
+    const isUpper = (note === note.toUpperCase());
+    const root    = bassToRoot(note);
+
+    // Vorherige Hervorhebung wegwischen, dann neue setzen
+    activeNotes.clear();
+    applyStyles('pull');
+    applyStyles('push');
+
+    // Bass-Taste selbst aktivieren
+    activeNotes.add(d+'-bass-'+note);
+
+    // Triade berechnen & auf Diskant markieren
+    const formula = isUpper ? CHORD.maj : CHORD.min;
+    const base    = N2S[root];
+    const tones   = formula.map(i => S2N[(base+i)%12]);
+
+    // Alle Diskant-Tasten der aktuellen Richtung durchgehen
+    ['Heim','C','G'].forEach(row => {
+        layout[d].treble[row].forEach(n => {
+            if(tones.includes(pureName(n))){
+                activeNotes.add(d+'-treble-'+n);
+            }
+        });
+    });
+
+    applyStyles(d);
+}
+
+// ─── GRUNDTON AUSWAHL (Akkordmodus) ─────────────────────────
+function selectRoot(root){
+    chordRoot = root;
+    // UI: aktiven Button markieren
+    document.querySelectorAll('.root-btn').forEach(b => b.classList.toggle('active', b.dataset.root === root));
+    // Styles neu rechnen
+    applyStyles('pull');
+    applyStyles('push');
+}
+
+// ─── STÜCK LADEN ────────────────────────────────────────────
+function loadPiece(id){
+    activeNotes.clear();
+    if(!id || !pieces[id]){
+        document.getElementById('infoPanel').classList.remove('visible');
+        applyStyles('pull'); applyStyles('push');
         return;
     }
-    // Chord mode: derive root
-    const root = note.charAt(0).toUpperCase() +
-                 (note.length > 1 && (note[1] === 'b' || note[1] === '#') ? note[1] : '');
-    clearHighlights();
-    const rootSemi = noteToSemitone[root];
-    highlightRoot  = root;
-    const formula  = selectedScale ? scaleFormulas[selectedScale] : chordFormulas[selectedChordType];
-    formula.forEach(interval => highlightScale.add(semitoneToNote[(rootSemi + interval) % 12]));
-    refreshStyles(currentDir);
-}
-
-// ─── PIECE LOADER ───────────────────────────────────────────
-function loadPiece(id) {
-    clearAll();
-    if (!id || !pieces[id]) { document.getElementById('infoPanel').classList.remove('visible'); return; }
     const p  = pieces[id];
-    const pn = p.notes[currentDir];
-    if (pn) {
-        pn.treble.forEach(n => activeNotes.add(currentDir + '-treble-' + n));
-        pn.bass.forEach(n  => activeNotes.add(currentDir + '-bass-'   + n));
+    const pn = p.notes[dir];
+    if(pn){
+        pn.treble.forEach(n => activeNotes.add(dir+'-treble-'+n));
+        pn.bass.forEach(n  => activeNotes.add(dir+'-bass-'+n));
     }
     document.getElementById('infoKey').textContent     = p.key;
     document.getElementById('infoRow').textContent     = p.row;
     document.getElementById('infoHelper').textContent  = p.helper;
     document.getElementById('infoBellows').textContent = p.bellows;
     document.getElementById('infoPanel').classList.add('visible');
-    refreshStyles(currentDir);
+    applyStyles(dir);
 }
 
-// ─── CLEAR ──────────────────────────────────────────────────
-function clearAll()        { activeNotes.clear(); clearHighlights(); }
-function clearHighlights() { highlightRoot = null; highlightScale = new Set(); refreshStyles('pull'); refreshStyles('push'); }
+// ─── MODUS WECHSEL ──────────────────────────────────────────
+function switchMode(newMode){
+    mode = newMode;
 
-// ─── DIRECTION SWITCH ───────────────────────────────────────
-function switchDir(dir) {
-    currentDir = dir;
-    document.getElementById('pull-layout').classList.toggle('visible', dir === 'pull');
-    document.getElementById('push-layout').classList.toggle('visible', dir === 'push');
+    // Bei jedem Moduswechsel alles leeren
+    activeNotes.clear();
+    chordRoot = null;
+    document.getElementById('pieceSelect').value = '';
+    document.getElementById('infoPanel').classList.remove('visible');
+
+    // UI-Sichtbarkeit
+    document.getElementById('chordPanel').classList.toggle('visible',  newMode==='chord');
+    document.getElementById('pieceSection').style.display = newMode==='normal' ? '' : 'none';
+    document.getElementById('legend').classList.toggle('visible',      newMode==='chord');
+
+    // Grundton-Buttons zurücksetzen
+    document.querySelectorAll('.root-btn').forEach(b => b.classList.remove('active'));
+
+    applyStyles('pull');
+    applyStyles('push');
+}
+
+// ─── RICHTUNG WECHSEL ───────────────────────────────────────
+function switchDir(newDir){
+    dir = newDir;
+    document.getElementById('pull-layout').classList.toggle('visible', newDir==='pull');
+    document.getElementById('push-layout').classList.toggle('visible', newDir==='push');
+    // Stück neu laden falls vorhanden
     const sel = document.getElementById('pieceSelect').value;
-    if (sel) loadPiece(sel); else { refreshStyles(dir); }
+    if(sel && mode==='normal') loadPiece(sel);
 }
 
-// ─── MODE SWITCH ────────────────────────────────────────────
-function switchMode(mode) {
-    currentMode = mode;
-    document.getElementById('chordPanel').classList.toggle('visible', mode === 'chord');
-    document.getElementById('legend').classList.toggle('visible',    mode === 'chord');
-    clearHighlights();
-    if (mode === 'normal') { const sel = document.getElementById('pieceSelect').value; if (sel) loadPiece(sel); }
-}
-
-// ─── LISTENERS ──────────────────────────────────────────────
-document.querySelectorAll('.seg-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
+// ─── EVENT LISTENERS ────────────────────────────────────────
+// Balgrichtung
+document.querySelectorAll('.seg button').forEach(btn => {
+    btn.addEventListener('click', ()=>{
+        document.querySelectorAll('.seg button').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         switchDir(btn.dataset.dir);
     });
 });
 
-document.querySelectorAll('.mode-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+// Modus-Pills
+document.querySelectorAll('.mode-pill').forEach(btn => {
+    btn.addEventListener('click', ()=>{
+        document.querySelectorAll('.mode-pill').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         switchMode(btn.dataset.mode);
     });
 });
 
+// Akkordtyp-Chips
 document.querySelectorAll('.chip[data-ctype]').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', ()=>{
         document.querySelectorAll('.chip[data-ctype]').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        selectedChordType = btn.dataset.ctype;
-        selectedScale = null;
+        chordType  = btn.dataset.ctype;
+        scaleType  = null;
         document.querySelectorAll('.chip[data-scale]').forEach(b => b.classList.remove('active'));
-        clearHighlights();
+        applyStyles('pull'); applyStyles('push');
     });
 });
 
+// Skalen-Chips
 document.querySelectorAll('.chip[data-scale]').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', ()=>{
         const was = btn.classList.contains('active');
         document.querySelectorAll('.chip[data-scale]').forEach(b => b.classList.remove('active'));
-        if (!was) { btn.classList.add('active'); selectedScale = btn.dataset.scale; }
-        else      { selectedScale = null; }
-        if (selectedScale) document.querySelectorAll('.chip[data-ctype]').forEach(b => b.classList.remove('active'));
-        clearHighlights();
+        scaleType = was ? null : btn.dataset.scale;
+        if(!was) btn.classList.add('active');
+        if(scaleType) document.querySelectorAll('.chip[data-ctype]').forEach(b => b.classList.remove('active'));
+        applyStyles('pull'); applyStyles('push');
     });
 });
 
+// Stück-Select
 document.getElementById('pieceSelect').addEventListener('change', e => loadPiece(e.target.value));
-document.getElementById('clearBtn').addEventListener('click', () => {
-    clearAll(); document.getElementById('pieceSelect').value = '';
-    document.getElementById('infoPanel').classList.remove('visible');
-    refreshStyles('pull'); refreshStyles('push');
-});
 
 // ─── INIT ───────────────────────────────────────────────────
+renderRootGrid();
 renderAll();
 </script>
-
 </body>
 </html>
