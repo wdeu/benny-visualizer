@@ -78,28 +78,18 @@ Datenmodelle
 Datei-Struktur (im Repo)
 ------------------------
 - index.html — gesamte Anwendung (HTML + CSS + JS)
-- assets/ (optional) — z. B. assets/screenshots/ für Bilder
+- assets/ — z. B. assets/screenshots/ für Bilder
 - LICENSE — MIT License (bereits vorhanden)
 
 Screenshots
 -----------
-Die README referenziert standardmäßig die Pfade assets/screenshots/overview.png und assets/screenshots/keyboard.png. Wenn der Upload von PNG-Dateien in der GitHub-Weboberfläche bei dir ausgegraut ist, versuche eine der folgenden Alternativen:
+Die Screenshots sind jetzt im Repository unter assets/screenshots/ abgelegt. Hier sind sie direkt eingebunden:
 
-1) Upload per Git (lokal):
-   - Lege die Screenshots lokal in assets/screenshots/ ab.
-   - Commit & push:
-     git add assets/screenshots/*.png
-     git commit -m "Add screenshots"
-     git push origin main
+![Übersicht — Gesamtansicht der Visualisierung](assets/screenshots/overview.png)
 
-2) GitHub-Web-UI (Drag & Drop): Öffne die Zielordneransicht (z. B. assets/screenshots/) im Web-Editor und ziehe die Dateien hinein. Falls die Schaltfläche ausgegraut bleibt, prüfe Berechtigungen bzw. Dateityp.
+![Diskant-Ansicht — Detailansicht der Tasten](assets/screenshots/keyboard.png)
 
-3) Falls deine PNG-Dateien von GitHub blockiert werden: Konvertiere kurz in JPG oder in ein anderes unterstütztes Format und lade diese hoch.
-
-Beispiel-Markdown zum Einfügen der Screenshots (sofern die Dateien im Repo liegen):
-
-![Übersicht](assets/screenshots/overview.png)
-![Diskant-Ansicht](assets/screenshots/keyboard.png)
+Hinweis: Falls die Dateinamen abweichen, nenne mir bitte die exakten Dateinamen (inkl. Groß-/Kleinschreibung) und ich passe die Pfade an.
 
 Contributing
 ------------
@@ -109,8 +99,6 @@ Contributing
 
 Automatische Anpassung & nächste Schritte
 ----------------------------------------
-Ich habe die README basierend auf der aktuellen index.html erzeugt und werde die Datei nun im Hauptzweig (main) des Repositories speichern, wie gewünscht.
-
-Wenn du möchtest, kann ich im nächsten Schritt:
-- konkrete Screenshots als Platzhalter (geringe Auflösung) in assets/screenshots/ generieren und committen, falls du das wünschst.
-- die README weiter anpassen (z. B. zusätzliche Beispiele für Tonbelegungen oder Keyboard-Mappings), nachdem du mir sagst, welche Informationen ergänzt werden sollen.
+Die README wurde basierend auf index.html erzeugt und enthält nun die eingebundenen Screenshots. Wenn du möchtest, kann ich zusätzlich:
+- Thumbnails/Redimensionierungen der Bilder erzeugen und ins Repo committen.
+- Zusätzliche Bildunterschriften, Bildbeschreibungen (alt-Text) oder einen direkten Link zur Vollbildversion ergänzen.
