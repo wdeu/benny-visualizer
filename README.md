@@ -14,9 +14,10 @@
 ## 📸 Screenshots
 
 <p align="center">
-  <img src="https://github.com/wdeu/benny-visualizer/blob/main/assets/screenshots/Push_Pull.png?raw=true" alt="Push-Pull-View" width="40%"/>
-  <img src="https://github.com/wdeu/benny-visualizer/blob/main/assets/screenshots/benny-visualizer-mac.png?raw=true" alt="Desktop View" width="40%"/>
   <img src="https://github.com/wdeu/benny-visualizer/blob/main/assets/screenshots/benny-visualizer-iphone.png?raw=true" alt="iPhone View" width="20%"/>
+  <img src="https://github.com/wdeu/benny-visualizer/blob/main/assets/screenshots/benny-visualizer-mac.png?raw=true" alt="Desktop View" width="30%"/>
+  <img src="https://github.com/wdeu/benny-visualizer/blob/main/assets/screenshots/Push_Pull.png?raw=true" alt="Push-Pull-View" width="40%"/>
+  
   
 </p>
 
