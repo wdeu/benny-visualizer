@@ -295,7 +295,7 @@ A: Aktuell nein, aber geplant für v5.0.
 A: Du bist im Akkordmodus. Wechsel zu "Normal" für Bass-Triaden.
 
 **Q: Wie merke ich mir die Belegung?**  
-A: Gar nicht! Nutze die App als visuelles Nachschlagewerk während des Übens.
+A: Muscle memory! Nutze die App als visuelles Nachschlagewerk während des Übens.
 
 ---
 
