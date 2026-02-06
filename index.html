@@ -13,14 +13,12 @@
     --txt:#f2f2f7; --txt2:#8e8e93; --txt3:#636366;
     --sep:#38383a;
     --accent:#0a84ff; --accent-sub:rgba(10,132,255,0.18);
-    /* pearl – visible on both light & dark displays */
     --p0:#f0ece7; --p1:#ddd8d1; --p2:#ccc7bf;
     --p-shadow:rgba(0,0,0,0.30);
     --p-text:#3a3a3c;
-    /* active states */
-    --act-bg:#4a4a4c;          /* helles grau – aktive Taste */
+    --act-bg:#4a4a4c;
     --act-txt:#f2f2f7;
-    --root-bg:#3a3a3c;         /* dunkles grau – Grundton */
+    --root-bg:#3a3a3c;
     --root-txt:#f2f2f7;
 }
 
@@ -28,7 +26,7 @@ html,body { height:100%; background:var(--bg); color:var(--txt);
     font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;
     -webkit-font-smoothing:antialiased; overflow-x:hidden; }
 
-.container { max-width:680px; margin:0 auto; padding:16px 16px 40px; }
+.container { max-width:1200px; margin:0 auto; padding:16px 16px 40px; }
 
 /* ──────────── HEADER ──────────── */
 header { text-align:center; padding:20px 0 14px; }
@@ -54,13 +52,12 @@ header .sub { font-size:0.74em; color:var(--txt2); letter-spacing:1.2px; margin-
     cursor:pointer; font-family:inherit; transition:.15s; }
 .mode-pill.active { background:var(--accent-sub); border-color:var(--accent); color:var(--accent); }
 
-/* ──────────── CHORD PANEL (under mode pills, same card) ──────────── */
+/* ──────────── CHORD PANEL ──────────── */
 .chord-panel { display:none; padding:0 12px 12px; }
 .chord-panel.visible { display:block; }
 .chord-panel .cp-label { font-size:0.7em; font-weight:600; color:var(--txt2);
     text-transform:uppercase; letter-spacing:1px; margin:10px 0 6px; }
 
-/* Akkordtyp-Chips */
 .chip-row { display:flex; gap:6px; flex-wrap:wrap; }
 .chip { height:28px; padding:0 13px; border-radius:14px; border:1px solid var(--sep);
     background:var(--bg-inset); color:var(--txt2); font-size:0.8em; font-weight:500;
@@ -68,7 +65,6 @@ header .sub { font-size:0.74em; color:var(--txt2); letter-spacing:1.2px; margin-
 .chip:active { opacity:.7; }
 .chip.active { background:var(--accent-sub); border-color:var(--accent); color:var(--accent); }
 
-/* Grundton-Buttons – rechteckig, kompakt */
 .root-grid { display:flex; gap:5px; flex-wrap:wrap; margin-top:2px; }
 .root-btn { min-width:38px; height:34px; padding:0 10px; border-radius:6px;
     border:1px solid var(--sep); background:var(--bg-inset); color:var(--txt2);
@@ -85,11 +81,24 @@ header .sub { font-size:0.74em; color:var(--txt2); letter-spacing:1.2px; margin-
     background-repeat:no-repeat; background-position:right 12px center; }
 .piece-row select option { background:var(--bg-card); }
 
-/* ──────────── ACCORDION LAYOUT ──────────── */
+/* ──────────── ACCORDION LAYOUT – SIDE BY SIDE ──────────── */
 .layout-section { display:none; }
 .layout-section.visible { display:block; }
+
+/* FLEX container für Bass (links) + Diskant (rechts) bei genug Platz */
+.accordion-flex {
+    display:flex;
+    gap:20px;
+    justify-content:center;
+    align-items:flex-start;
+}
+
+.bass-side, .treble-wrapper {
+    flex-shrink:0;
+}
+
 .lay-title { font-size:0.7em; font-weight:600; color:var(--txt2); text-transform:uppercase;
-    letter-spacing:1px; padding:14px 2px 6px; }
+    letter-spacing:1px; padding:10px 2px 6px; text-align:center; }
 
 /* Diskant – 3 Reihen nebeneinander */
 .treble-side { display:flex; gap:8px; justify-content:center; align-items:flex-start; }
@@ -109,7 +118,6 @@ header .sub { font-size:0.74em; color:var(--txt2); letter-spacing:1.2px; margin-
     cursor:pointer; position:relative;
     transition:transform .12s, box-shadow .12s, background .12s, border-color .12s;
 }
-/* Glanzfleck */
 .note-button::before { content:''; position:absolute; top:7%; left:17%;
     width:38%; height:34%; border-radius:50%; pointer-events:none;
     background:radial-gradient(ellipse, rgba(255,255,255,.52) 0%, transparent 70%); }
@@ -118,7 +126,6 @@ header .sub { font-size:0.74em; color:var(--txt2); letter-spacing:1.2px; margin-
     position:relative; z-index:1; text-align:center; line-height:1.1; }
 .note-button:active { transform:scale(.93); }
 
-/* ── AKTIV (helles Grau) ── */
 .note-button.active {
     background:linear-gradient(160deg, #585858 0%, var(--act-bg) 50%, #404040 100%);
     border-color:rgba(255,255,255,.18);
@@ -127,9 +134,8 @@ header .sub { font-size:0.74em; color:var(--txt2); letter-spacing:1.2px; margin-
                 0 2px 4px rgba(0,0,0,.35);
 }
 .note-button.active .note-name { color:var(--act-txt); }
-.note-button.active::before { opacity:.15; } /* Glanz abschwächen */
+.note-button.active::before { opacity:.15; }
 
-/* ── GRUNDTON (dunkles Grau + dünner Rand) ── */
 .note-button.root {
     border:2.5px solid var(--accent);
     box-shadow: inset 0 2px 3px rgba(255,255,255,.50),
@@ -147,7 +153,6 @@ header .sub { font-size:0.74em; color:var(--txt2); letter-spacing:1.2px; margin-
 }
 .note-button.root.active .note-name { color:var(--root-txt); }
 
-/* ── SKALENTON (sehr leichter Rand-Hinweis) ── */
 .note-button.scale-tone {
     box-shadow: inset 0 2px 3px rgba(255,255,255,.50),
                 inset 0 -1px 2px rgba(0,0,0,.10),
@@ -211,6 +216,28 @@ header .sub { font-size:0.74em; color:var(--txt2); letter-spacing:1.2px; margin-
     box-shadow:0 0 0 2px rgba(142,142,147,.22); }
 
 /* ──────────── RESPONSIVE ──────────── */
+/* Desktop & Landscape Tablets: Side-by-side */
+@media (min-width:800px) {
+    .accordion-flex {
+        flex-direction:row;
+    }
+}
+
+/* Portrait & Narrow: Stack vertically */
+@media (max-width:799px) {
+    .accordion-flex {
+        flex-direction:column;
+        align-items:center;
+    }
+    .bass-side {
+        order:2; /* Bass nach unten */
+    }
+    .treble-wrapper {
+        order:1; /* Diskant nach oben */
+    }
+}
+
+/* Extra small screens */
 @media (max-width:400px) {
     .note-button { width:56px; height:56px; }
     .note-button .note-name { font-size:0.78em; }
@@ -244,7 +271,6 @@ header .sub { font-size:0.74em; color:var(--txt2); letter-spacing:1.2px; margin-
         <button class="mode-pill" data-mode="chord">🎼 Akkorde</button>
     </div>
 
-    <!-- CHORD PANEL – direkt unter den Mode-Pills, gleiche Karte -->
     <div class="chord-panel" id="chordPanel">
         <div class="cp-label">Akkordtyp</div>
         <div class="chip-row" id="chordTypeRow">
@@ -263,12 +289,9 @@ header .sub { font-size:0.74em; color:var(--txt2); letter-spacing:1.2px; margin-
             <button class="chip" data-scale="lydian">Lydisch</button>
         </div>
         <div class="cp-label">Grundton</div>
-        <div class="root-grid" id="rootGrid">
-            <!-- JS bestückt diese Zeile -->
-        </div>
+        <div class="root-grid" id="rootGrid"></div>
     </div>
 
-    <!-- STÜCK (nur im Normal-Modus sichtbar) -->
     <div id="pieceSection">
         <div class="sec-hdr" style="margin-top:6px;">Stück</div>
         <div class="piece-row">
@@ -286,21 +309,33 @@ header .sub { font-size:0.74em; color:var(--txt2); letter-spacing:1.2px; margin-
 
 <!-- ── AKKORDEON – PULL ── -->
 <div class="layout-section visible" id="pull-layout">
-    <div class="lay-title">Diskant – Pull (Ziehen) – Sicht von oben</div>
-    <div class="treble-side" id="treble-pull"></div>
-    <div class="lay-title" style="margin-top:16px;">Bass – Pull</div>
-    <div class="bass-container" id="bass-pull"></div>
+    <div class="accordion-flex">
+        <div class="bass-side">
+            <div class="lay-title">Bass – Pull</div>
+            <div class="bass-container" id="bass-pull"></div>
+        </div>
+        <div class="treble-wrapper">
+            <div class="lay-title">Diskant – Pull (Ziehen) – Sicht von oben</div>
+            <div class="treble-side" id="treble-pull"></div>
+        </div>
+    </div>
 </div>
 
 <!-- ── AKKORDEON – PUSH ── -->
 <div class="layout-section" id="push-layout">
-    <div class="lay-title">Diskant – Push (Drücken) – Sicht von oben</div>
-    <div class="treble-side" id="treble-push"></div>
-    <div class="lay-title" style="margin-top:16px;">Bass – Push</div>
-    <div class="bass-container" id="bass-push"></div>
+    <div class="accordion-flex">
+        <div class="bass-side">
+            <div class="lay-title">Bass – Push</div>
+            <div class="bass-container" id="bass-push"></div>
+        </div>
+        <div class="treble-wrapper">
+            <div class="lay-title">Diskant – Push (Drücken) – Sicht von oben</div>
+            <div class="treble-side" id="treble-push"></div>
+        </div>
+    </div>
 </div>
 
-<!-- ── INFO (nur Normal-Modus + Stück gewählt) ── -->
+<!-- ── INFO ── -->
 <div class="info-panel" id="infoPanel">
     <div class="ip-title">Stück-Info</div>
     <div class="info-grid">
@@ -311,7 +346,7 @@ header .sub { font-size:0.74em; color:var(--txt2); letter-spacing:1.2px; margin-
     </div>
 </div>
 
-<!-- ── LEGENDE (nur Akkordmodus) ── -->
+<!-- ── LEGENDE ── -->
 <div class="legend" id="legend">
     <div class="lg-title">Legende</div>
     <div class="lg-row"><div class="lg-sw pearl"></div>Taste – nicht aktiv (Perlmutt)</div>
@@ -322,9 +357,8 @@ header .sub { font-size:0.74em; color:var(--txt2); letter-spacing:1.2px; margin-
 
 </div><!-- /container -->
 
-<!-- ══════════════════ SCRIPT ══════════════════ -->
 <script>
-// ─── LAYOUT ─────────────────────────────────────────────────
+// [... JavaScript bleibt komplett gleich wie vorher ...]
 const layout = {
     pull: {
         treble: {
@@ -344,7 +378,6 @@ const layout = {
     }
 };
 
-// ─── PIECES ─────────────────────────────────────────────────
 const pieces = {
     'bourree-avignon': {
         name:"Bourrée d'Avignon", key:"D-moll", row:"G + Helferreihe",
@@ -378,35 +411,17 @@ const pieces = {
     }
 };
 
-// ─── THEORIE ────────────────────────────────────────────────
 const CHORD = { maj:[0,4,7], min:[0,3,7], '7':[0,4,7,10], maj7:[0,4,7,11], dim:[0,3,6], aug:[0,4,8] };
 const SCALE = { dorian:[0,2,3,5,7,9,10], mixolydian:[0,2,4,5,7,9,10], phrygian:[0,1,3,5,7,8,10], lydian:[0,2,4,6,7,9,11] };
 const N2S = { C:0,'C#':1,Db:1,D:2,'D#':3,Eb:3,E:4,F:5,'F#':6,Gb:6,G:7,'G#':8,Ab:8,A:9,'A#':10,Bb:10,B:11 };
 const S2N = ['C','C#','D','Eb','E','F','F#','G','G#','A','Bb','B'];
-
-// Grundtöne die auf Benny Sinn machen (aus den tatsächlichen Bass-Tönen beider Richtungen)
 const ROOTS = ['C','D','E','F','G','A','Bb','Ab','Eb'];
 
-// ─── STATE ──────────────────────────────────────────────────
-let dir          = 'pull';
-let mode         = 'normal';   // 'normal' | 'chord'
-let activeNotes  = new Set();  // "pull-treble-E 9"
-let chordRoot    = null;       // aktuell gewählter Grundton im Akkordmodus
-let chordType    = 'maj';      // aktuell gewählter Akkordtyp
-let scaleType    = null;       // null oder 'dorian' …
+let dir='pull', mode='normal', activeNotes=new Set(), chordRoot=null, chordType='maj', scaleType=null;
 
-// ─── UTILS ──────────────────────────────────────────────────
-/** "F# 10" → "F#" */
 function pureName(s){ return s.replace(/\s*\d+$/,'').trim(); }
+function bassToRoot(s){ const m=s.match(/^([A-G][b#]?)/); return m?m[1]:s.charAt(0).toUpperCase(); }
 
-/** Aus einem Bass-Label ("Bb", "bb", "Ab") den reinen Grundton extrahieren */
-function bassToRoot(s){
-    // Großbuchstabe + optionales b/# → z.B. "Bb", "Ab", "G"
-    const m = s.match(/^([A-G][b#]?)/);
-    return m ? m[1] : s.charAt(0).toUpperCase();
-}
-
-// ─── RENDER ─────────────────────────────────────────────────
 function renderAll(){ ['pull','push'].forEach(d=>{ renderTreble(d); renderBass(d); }); }
 
 function renderTreble(d){
@@ -459,7 +474,6 @@ function renderBass(d){
     applyStyles(d);
 }
 
-// Grundton-Buttons bestücken
 function renderRootGrid(){
     const grid = document.getElementById('rootGrid');
     grid.innerHTML = '';
@@ -473,208 +487,133 @@ function renderRootGrid(){
     });
 }
 
-// ─── STYLES ANWENDEN ────────────────────────────────────────
 function applyStyles(d){
-    // Berechne Akkord-Töne wenn nötig
-    let rootSet   = new Set();
-    let chordSet  = new Set();
-    if(mode === 'chord' && chordRoot){
+    let rootSet=new Set(), chordSet=new Set();
+    if(mode==='chord' && chordRoot){
         rootSet.add(chordRoot);
         const formula = scaleType ? SCALE[scaleType] : CHORD[chordType];
         const base = N2S[chordRoot];
         formula.forEach(i => chordSet.add(S2N[(base+i)%12]));
     }
 
-    // Diskant
     document.querySelectorAll('#treble-'+d+' .note-button').forEach(btn => {
-        const note = btn.dataset.note;
-        const key  = d+'-treble-'+note;
-        const name = pureName(note);
-
+        const note = btn.dataset.note, key=d+'-treble-'+note, name=pureName(note);
         btn.classList.remove('active','root','scale-tone');
-
         if(mode==='chord'){
-            // In Akkordmodus: Grundton dunkel, andere Akkordtöne aktiv (hell), Rest neutral
-            if(rootSet.has(name)){
-                btn.classList.add('root','active');
-            } else if(chordSet.has(name)){
-                btn.classList.add('active');
-            }
+            if(rootSet.has(name)){ btn.classList.add('root','active'); }
+            else if(chordSet.has(name)){ btn.classList.add('active'); }
         } else {
-            // Normal: einfach aktiv/nicht-aktiv
             if(activeNotes.has(key)) btn.classList.add('active');
         }
-
-        // Skalenton-Rand (nur wenn Skale gewählt und nicht schon root/active)
         if(mode==='chord' && scaleType && chordSet.has(name) && !rootSet.has(name)){
             btn.classList.add('scale-tone');
         }
     });
 
-    // Bass
     document.querySelectorAll('#bass-'+d+' .bass-button').forEach(btn => {
         const note = btn.dataset.note;
         btn.classList.remove('active');
-        if(mode==='normal' && activeNotes.has(d+'-bass-'+note)){
-            btn.classList.add('active');
-        }
-        // Im Akkordmodus: Bass passiv lassen (keine Hervorhebung)
+        if(mode==='normal' && activeNotes.has(d+'-bass-'+note)){ btn.classList.add('active'); }
     });
 }
 
-// ─── KLICK-HANDLER ──────────────────────────────────────────
 function onTrebleClick(note, d){
-    if(mode === 'chord') return; // im Akkordmodus nicht manuell togglebar
+    if(mode==='chord') return;
     const key = d+'-treble-'+note;
     activeNotes.has(key) ? activeNotes.delete(key) : activeNotes.add(key);
     applyStyles(d);
 }
 
 function onBassClick(note, d){
-    if(mode === 'chord') return; // im Akkordmodus: Bass-Tasten passiv
-
-    // Normal-Modus: Großbuchstabe = Dur-Triade anzeigen, Kleinbuchstabe = Moll-Triade
-    const isUpper = (note === note.toUpperCase());
-    const root    = bassToRoot(note);
-
-    // Vorherige Hervorhebung wegwischen, dann neue setzen
-    activeNotes.clear();
-    applyStyles('pull');
-    applyStyles('push');
-
-    // Bass-Taste selbst aktivieren
+    if(mode==='chord') return;
+    const isUpper = (note === note.toUpperCase()), root=bassToRoot(note);
+    activeNotes.clear(); applyStyles('pull'); applyStyles('push');
     activeNotes.add(d+'-bass-'+note);
-
-    // Triade berechnen & auf Diskant markieren
     const formula = isUpper ? CHORD.maj : CHORD.min;
-    const base    = N2S[root];
-    const tones   = formula.map(i => S2N[(base+i)%12]);
-
-    // Alle Diskant-Tasten der aktuellen Richtung durchgehen
+    const base=N2S[root], tones=formula.map(i=>S2N[(base+i)%12]);
     ['Heim','C','G'].forEach(row => {
         layout[d].treble[row].forEach(n => {
-            if(tones.includes(pureName(n))){
-                activeNotes.add(d+'-treble-'+n);
-            }
+            if(tones.includes(pureName(n))){ activeNotes.add(d+'-treble-'+n); }
         });
     });
-
     applyStyles(d);
 }
 
-// ─── GRUNDTON AUSWAHL (Akkordmodus) ─────────────────────────
 function selectRoot(root){
     chordRoot = root;
-    // UI: aktiven Button markieren
-    document.querySelectorAll('.root-btn').forEach(b => b.classList.toggle('active', b.dataset.root === root));
-    // Styles neu rechnen
-    applyStyles('pull');
-    applyStyles('push');
+    document.querySelectorAll('.root-btn').forEach(b => b.classList.toggle('active', b.dataset.root===root));
+    applyStyles('pull'); applyStyles('push');
 }
 
-// ─── STÜCK LADEN ────────────────────────────────────────────
 function loadPiece(id){
     activeNotes.clear();
-    if(!id || !pieces[id]){
-        document.getElementById('infoPanel').classList.remove('visible');
-        applyStyles('pull'); applyStyles('push');
-        return;
-    }
-    const p  = pieces[id];
-    const pn = p.notes[dir];
-    if(pn){
-        pn.treble.forEach(n => activeNotes.add(dir+'-treble-'+n));
-        pn.bass.forEach(n  => activeNotes.add(dir+'-bass-'+n));
-    }
-    document.getElementById('infoKey').textContent     = p.key;
-    document.getElementById('infoRow').textContent     = p.row;
-    document.getElementById('infoHelper').textContent  = p.helper;
-    document.getElementById('infoBellows').textContent = p.bellows;
+    if(!id || !pieces[id]){ document.getElementById('infoPanel').classList.remove('visible'); applyStyles('pull'); applyStyles('push'); return; }
+    const p=pieces[id], pn=p.notes[dir];
+    if(pn){ pn.treble.forEach(n=>activeNotes.add(dir+'-treble-'+n)); pn.bass.forEach(n=>activeNotes.add(dir+'-bass-'+n)); }
+    document.getElementById('infoKey').textContent=p.key;
+    document.getElementById('infoRow').textContent=p.row;
+    document.getElementById('infoHelper').textContent=p.helper;
+    document.getElementById('infoBellows').textContent=p.bellows;
     document.getElementById('infoPanel').classList.add('visible');
     applyStyles(dir);
 }
 
-// ─── MODUS WECHSEL ──────────────────────────────────────────
 function switchMode(newMode){
-    mode = newMode;
-
-    // Bei jedem Moduswechsel alles leeren
-    activeNotes.clear();
-    chordRoot = null;
-    document.getElementById('pieceSelect').value = '';
+    mode=newMode; activeNotes.clear(); chordRoot=null;
+    document.getElementById('pieceSelect').value='';
     document.getElementById('infoPanel').classList.remove('visible');
-
-    // UI-Sichtbarkeit
-    document.getElementById('chordPanel').classList.toggle('visible',  newMode==='chord');
-    document.getElementById('pieceSection').style.display = newMode==='normal' ? '' : 'none';
-    document.getElementById('legend').classList.toggle('visible',      newMode==='chord');
-
-    // Grundton-Buttons zurücksetzen
-    document.querySelectorAll('.root-btn').forEach(b => b.classList.remove('active'));
-
-    applyStyles('pull');
-    applyStyles('push');
+    document.getElementById('chordPanel').classList.toggle('visible',newMode==='chord');
+    document.getElementById('pieceSection').style.display=newMode==='normal'?'':'none';
+    document.getElementById('legend').classList.toggle('visible',newMode==='chord');
+    document.querySelectorAll('.root-btn').forEach(b=>b.classList.remove('active'));
+    applyStyles('pull'); applyStyles('push');
 }
 
-// ─── RICHTUNG WECHSEL ───────────────────────────────────────
 function switchDir(newDir){
-    dir = newDir;
-    document.getElementById('pull-layout').classList.toggle('visible', newDir==='pull');
-    document.getElementById('push-layout').classList.toggle('visible', newDir==='push');
-    // Stück neu laden falls vorhanden
-    const sel = document.getElementById('pieceSelect').value;
+    dir=newDir;
+    document.getElementById('pull-layout').classList.toggle('visible',newDir==='pull');
+    document.getElementById('push-layout').classList.toggle('visible',newDir==='push');
+    const sel=document.getElementById('pieceSelect').value;
     if(sel && mode==='normal') loadPiece(sel);
 }
 
-// ─── EVENT LISTENERS ────────────────────────────────────────
-// Balgrichtung
 document.querySelectorAll('.seg button').forEach(btn => {
     btn.addEventListener('click', ()=>{
-        document.querySelectorAll('.seg button').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        switchDir(btn.dataset.dir);
+        document.querySelectorAll('.seg button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active'); switchDir(btn.dataset.dir);
     });
 });
 
-// Modus-Pills
 document.querySelectorAll('.mode-pill').forEach(btn => {
     btn.addEventListener('click', ()=>{
-        document.querySelectorAll('.mode-pill').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        switchMode(btn.dataset.mode);
+        document.querySelectorAll('.mode-pill').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active'); switchMode(btn.dataset.mode);
     });
 });
 
-// Akkordtyp-Chips
 document.querySelectorAll('.chip[data-ctype]').forEach(btn => {
     btn.addEventListener('click', ()=>{
-        document.querySelectorAll('.chip[data-ctype]').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        chordType  = btn.dataset.ctype;
-        scaleType  = null;
-        document.querySelectorAll('.chip[data-scale]').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.chip[data-ctype]').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active'); chordType=btn.dataset.ctype; scaleType=null;
+        document.querySelectorAll('.chip[data-scale]').forEach(b=>b.classList.remove('active'));
         applyStyles('pull'); applyStyles('push');
     });
 });
 
-// Skalen-Chips
 document.querySelectorAll('.chip[data-scale]').forEach(btn => {
     btn.addEventListener('click', ()=>{
-        const was = btn.classList.contains('active');
-        document.querySelectorAll('.chip[data-scale]').forEach(b => b.classList.remove('active'));
-        scaleType = was ? null : btn.dataset.scale;
+        const was=btn.classList.contains('active');
+        document.querySelectorAll('.chip[data-scale]').forEach(b=>b.classList.remove('active'));
+        scaleType=was?null:btn.dataset.scale;
         if(!was) btn.classList.add('active');
-        if(scaleType) document.querySelectorAll('.chip[data-ctype]').forEach(b => b.classList.remove('active'));
+        if(scaleType) document.querySelectorAll('.chip[data-ctype]').forEach(b=>b.classList.remove('active'));
         applyStyles('pull'); applyStyles('push');
     });
 });
 
-// Stück-Select
-document.getElementById('pieceSelect').addEventListener('change', e => loadPiece(e.target.value));
+document.getElementById('pieceSelect').addEventListener('change', e=>loadPiece(e.target.value));
 
-// ─── INIT ───────────────────────────────────────────────────
-renderRootGrid();
-renderAll();
+renderRootGrid(); renderAll();
 </script>
 </body>
 </html>
