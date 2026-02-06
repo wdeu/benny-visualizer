@@ -5,8 +5,19 @@
 ![Version](https://img.shields.io/badge/version-4.0-blue)
 ![License](https://img.shields.io/badge/license-Personal-green)
 
+<p align="center">
+  <img src="https://github.com/wdeu/benny-visualizer/blob/main/assets/screenshots/Benny.png?raw=true" alt="Castagnari Benny" width="400"/>
+</p>
+
 ---
-Benny Visualizer ist eine kleine, rein browserbasierte Visualisierung für das diatonische Akkordeon Modell "Castagnari Benny". Die Implementation besteht aus einer einzigen HTML-Datei (index.html) mit eingebettetem CSS und JavaScript.
+
+## 📸 Screenshots
+
+<p align="center">
+  <img src="https://github.com/wdeu/benny-visualizer/blob/main/assets/screenshots/benny-visualizer-mac.png?raw=true" alt="Desktop View" width="45%"/>
+  <img src="https://github.com/wdeu/benny-visualizer/blob/main/assets/screenshots/benny-visualizer-iphone.png?raw=true" alt="iPhone View" width="25%"/>
+</p>
+
 ---
 
 ## ✨ Features
@@ -14,6 +25,8 @@ Benny Visualizer ist eine kleine, rein browserbasierte Visualisierung für das d
 ### 🎵 Basis
 - **Button-Layout Visualisierung** (Push/Pull getrennt)
 - **Spieler-Perspektive** (wie du von oben draufschaust: Helfer links, G rechts)
+- **Side-by-Side Layout** – Bass & Diskant nebeneinander bei genug Platz (Desktop, Tablet Landscape)
+- **Responsive Design** – automatische Anpassung an Portrait/Landscape
 - **Perlmutt-Design** – sichtbar auf hellen & dunklen Displays
 - **iOS-typisches Design** – Grautöne, minimale Farben, klare Hierarchie
 - **Vordefinierte Stücke** (Bourrées, Polkas, Scottishs)
@@ -117,7 +130,10 @@ Benny Visualizer ist eine kleine, rein browserbasierte Visualisierung für das d
 ```
 
 ### Workflow-Optimierung
+**Problem:** Vorher musste man oben Modus wählen, nach unten scrollen zum Bass, wieder hoch zum Diskant.
 
+**Lösung:** Jetzt alles direkt untereinander ohne Scrollen:
+```
 Modus wählen
     ↓
 Akkordtyp wählen (direkt darunter)
@@ -145,8 +161,10 @@ Diskant sehen (direkt darunter)
 | Edge | ✅ Vollständig |
 
 ### Responsive Design
-- **Desktop:** Optimale Größe (680px max)
-- **Tablet:** Angepasste Button-Größen
+- **Desktop (≥800px):** Side-by-Side – Bass links, Diskant rechts, kein Scrollen
+- **Tablet Landscape:** Side-by-Side – optimale Übersicht
+- **iPhone Landscape:** Side-by-Side – Bass & Diskant nebeneinander
+- **Portrait (<800px):** Vertikal gestapelt – Diskant oben, Bass unten
 - **Smartphone:** Kompakte Darstellung (ab 320px)
 
 ---
@@ -195,8 +213,10 @@ Aufgabe: Wie sieht die Folge G - D - Em - C aus?
 
 ## 📊 Version History
 
-### v4.0 (Februar 2026) – iOS Design Refresh
+### v4.0 (Februar 2026) – iOS Design Refresh + Side-by-Side
 - 🎨 **iOS-typisches Design** mit Grautönen
+- 🖥️ **Side-by-Side Layout** – Bass & Diskant nebeneinander (Desktop/Tablet Landscape)
+- 📱 **Auto-Rotation** – iPhone Landscape → automatisch Side-by-Side
 - 🎯 **Grundton-Buttons** direkt im Akkord-Panel
 - 🔄 **Workflow optimiert** – kein Scrollen mehr nötig
 - 🎹 **Bass-Triaden** im Normal-Modus (Groß-/Kleinbuchstabe)
@@ -272,7 +292,7 @@ A: Aktuell nein, aber geplant für v5.0.
 A: Du bist im Akkordmodus. Wechsel zu "Normal" für Bass-Triaden.
 
 **Q: Wie merke ich mir die Belegung?**  
-A: Nach und nach. Nutze die App als visuelles Nachschlagewerk während des Übens.
+A: Gar nicht! Nutze die App als visuelles Nachschlagewerk während des Übens.
 
 ---
 
@@ -316,18 +336,7 @@ Viel Spaß beim Lernen! 🪗🎵
 
 Fragen oder Feature-Wünsche?  
 → Siehe [INSTALLATION.md](INSTALLATION.md) für FAQ & Troubleshooting
+
 ---
 
-Quick Start
------------
-1. Repository klonen:
-   git clone https://github.com/wdeu/benny-visualizer.git
-2. Ins Verzeichnis wechseln und die Datei index.html im Browser öffnen:
-   - Direkt durch Doppelklick auf index.html oder
-   - Empfohlen: lokalen Webserver starten, z. B. mit Python 3:
-     python -m http.server 8000
-     und im Browser öffnen: http://localhost:8000
-
-Hinweis zur Lizenz
-------------------
-Dieses Projekt steht unter der MIT License. 
+**Made with ❤️ for diatonic accordion players**
